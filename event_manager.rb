@@ -40,7 +40,7 @@ class Phone
 			when 10
 				@phone
 			when 11
-				if @phone[0] == 1
+				if @phone[0] == "1"
 				  @phone = @phone[1..9]
 				else
 				  @phone = "0000000000"
