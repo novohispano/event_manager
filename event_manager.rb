@@ -11,23 +11,23 @@ require "date"
 
 Sunlight::Base.api_key = "e179a6973728c4dd3fb1204283aaccb5"
 
-class Date_and_Time
+class DateAndTime
 
 	def initialize(date)
 		@date = DateTime.strptime(date, "%m/%d/%y %k:%M")
 	end
 
 	def get_hours
-		hours = @date.hour
+    @date.hour
 	end
 
 	def get_days
-		days = @date.wday
-	end	
+		@date.wday
+	end
 end
 
 class Phone
-	
+
 	def initialize(phone)
 		@phone = phone.tr("-. \(\)", "")
 	end
@@ -36,20 +36,20 @@ class Phone
 		phone_length = @phone.length
 		case phone_length
 			when 0..9
-				@phone = "0000000000"
+        "0000000000"
 			when 10
 				@phone
 			when 11
 				if @phone[0] == 1
-				  @phone = @phone[1..9]
+				  @phone[1..9]
 				else
-				  @phone = "0000000000"
+				  "0000000000"
 				end
 			else
-				@phone = "0000000000"
+				"0000000000"
 		end
 	end
-end 
+end
 
 class ZipCode
 
@@ -89,9 +89,9 @@ class EventAttendee
 			zipcode = ZipCode.new(line["Zipcode"])
 			zipcode.clean_zipcode
 			representatives = zipcode.zipcode_to_representatives(zipcode)
-	
+
 			form_letter = erb_template.result(binding)
-	
+
 			save_thank_you_letters(id, form_letter)
 		end
 	end
@@ -101,7 +101,7 @@ class EventAttendee
 
 		days = [""]
 		@contents.each do |line|
-			date_time = Date_and_Time.new(line["RegDate"])
+			date_time = DateAndTime.new(line["RegDate"])
 			days << date_time.get_days
 		end
 
@@ -114,7 +114,7 @@ class EventAttendee
 
 		hours = [""]
 		@contents.each do |line|
-			date_time = Date_and_Time.new(line["RegDate"])
+			date_time = DateAndTime.new(line["RegDate"])
 			hours << date_time.get_hours
 		end
 
