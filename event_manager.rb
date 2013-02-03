@@ -27,7 +27,7 @@ class Date_and_Time
 end
 
 class Phone
-	
+  
 	def initialize(phone)
 		@phone = phone.tr("-. \(\)", "")
 	end
@@ -36,19 +36,26 @@ class Phone
 		phone_length = @phone.length
 		case phone_length
 			when 0..9
-				@phone = "0000000000"
+				invalid_number
 			when 10
 				@phone
 			when 11
 				if @phone[0] == 1
 				  @phone = @phone[1..9]
 				else
-				  @phone = "0000000000"
+				  invalid_number
 				end
 			else
-				@phone = "0000000000"
+				invalid_number
 		end
 	end
+  
+  private
+  
+  def invalid_number
+    "0000000000"
+  end
+  
 end 
 
 class ZipCode
