@@ -31,7 +31,7 @@ class Phone
   attr_reader :raw
 
 	def initialize(phone)
-		@raw = phone.tr("-. \(\)", "")
+		@raw = phone.to_s.tr("-. \(\)", "")
 	end
   
   def to_s
