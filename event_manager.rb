@@ -11,7 +11,7 @@ require "date"
 
 Sunlight::Base.api_key = "e179a6973728c4dd3fb1204283aaccb5"
 
-class Date_and_Time
+class DateAndTime
 
 	def initialize(date)
 		@date = DateTime.strptime(date, "%m/%d/%y %k:%M")
@@ -101,7 +101,7 @@ class EventAttendee
 
 		days = [""]
 		@contents.each do |line|
-			date_time = Date_and_Time.new(line["RegDate"])
+			date_time = DateAndTime.new(line["RegDate"])
 			days << date_time.get_days
 		end
 
@@ -114,7 +114,7 @@ class EventAttendee
 
 		hours = [""]
 		@contents.each do |line|
-			date_time = Date_and_Time.new(line["RegDate"])
+			date_time = DateAndTime.new(line["RegDate"])
 			hours << date_time.get_hours
 		end
 
