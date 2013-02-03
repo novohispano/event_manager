@@ -23,25 +23,33 @@ class Date_and_Time
 
 	def get_days
 		days = @date.wday
-	end	
+	end
 end
 
 class Phone
-  
-	def initialize(phone)
-		@phone = phone.tr("-. \(\)", "")
-	end
 
-	def clean_phone
-		phone_length = @phone.length
+  attr_reader :raw
+
+	def initialize(phone)
+		@raw = phone.tr("-. \(\)", "")
+	end
+  
+  def to_s
+    clean
+  end
+
+  private
+
+	def clean
+		phone_length = raw.length
 		case phone_length
 			when 0..9
 				invalid_number
 			when 10
-				@phone
+				raw
 			when 11
-				if @phone[0] == 1
-				  @phone = @phone[1..9]
+				if raw[0] == 1
+				  raw = raw[1..9]
 				else
 				  invalid_number
 				end
@@ -49,14 +57,12 @@ class Phone
 				invalid_number
 		end
 	end
-  
-  private
-  
+
   def invalid_number
     "0000000000"
   end
-  
-end 
+
+end
 
 class ZipCode
 
@@ -96,9 +102,9 @@ class EventAttendee
 			zipcode = ZipCode.new(line["Zipcode"])
 			zipcode.clean_zipcode
 			representatives = zipcode.zipcode_to_representatives(zipcode)
-	
+
 			form_letter = erb_template.result(binding)
-	
+
 			save_thank_you_letters(id, form_letter)
 		end
 	end
@@ -134,7 +140,7 @@ class EventAttendee
 
 		@contents.each do |line|
 			phone = Phone.new(line["HomePhone"])
-			puts phone.clean_phone
+			puts phone
 		end
 	end
 
