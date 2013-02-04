@@ -11,7 +11,7 @@ require "date"
 
 Sunlight::Base.api_key = "e179a6973728c4dd3fb1204283aaccb5"
 
-class Date_and_Time
+class DateAndTime
 
 	def initialize(date)
 		@date = DateTime.strptime(date, "%m/%d/%y %k:%M")
@@ -23,33 +23,46 @@ class Date_and_Time
 
 	def get_days
 		days = @date.wday
-	end	
+	end
 end
 
 class Phone
-	
-	def initialize(phone)
-		@phone = phone.tr("-. \(\)", "")
-	end
 
-	def clean_phone
-		phone_length = @phone.length
+  attr_reader :raw
+
+	def initialize(phone)
+		@raw = phone.to_s.tr("-. \(\)", "")
+	end
+  
+  def to_s
+    clean
+  end
+
+  private
+
+	def clean
+		phone_length = raw.length
 		case phone_length
 			when 0..9
-				@phone = "0000000000"
+				invalid_number
 			when 10
-				@phone
+				raw
 			when 11
 				if @phone[0] == "1"
 				  @phone = @phone[1..9]
 				else
-				  @phone = "0000000000"
+				  invalid_number
 				end
 			else
-				@phone = "0000000000"
+				invalid_number
 		end
 	end
-end 
+
+  def invalid_number
+    "0000000000"
+  end
+
+end
 
 class ZipCode
 
@@ -89,9 +102,9 @@ class EventAttendee
 			zipcode = ZipCode.new(line["Zipcode"])
 			zipcode.clean_zipcode
 			representatives = zipcode.zipcode_to_representatives(zipcode)
-	
+
 			form_letter = erb_template.result(binding)
-	
+
 			save_thank_you_letters(id, form_letter)
 		end
 	end
@@ -101,7 +114,7 @@ class EventAttendee
 
 		days = [""]
 		@contents.each do |line|
-			date_time = Date_and_Time.new(line["RegDate"])
+			date_time = DateAndTime.new(line["RegDate"])
 			days << date_time.get_days
 		end
 
@@ -114,7 +127,7 @@ class EventAttendee
 
 		hours = [""]
 		@contents.each do |line|
-			date_time = Date_and_Time.new(line["RegDate"])
+			date_time = DateAndTime.new(line["RegDate"])
 			hours << date_time.get_hours
 		end
 
@@ -127,7 +140,7 @@ class EventAttendee
 
 		@contents.each do |line|
 			phone = Phone.new(line["HomePhone"])
-			puts phone.clean_phone
+			puts phone
 		end
 	end
 
