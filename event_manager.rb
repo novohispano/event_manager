@@ -5,82 +5,11 @@
 ###
 
 require "csv"
-require "sunlight"
 require "erb"
-require "date"
 
-Sunlight::Base.api_key = "e179a6973728c4dd3fb1204283aaccb5"
-
-class DateAndTime
-
-	def initialize(date)
-		@date = DateTime.strptime(date, "%m/%d/%y %k:%M")
-	end
-
-	def get_hours
-    	@date.hour
-	end
-
-	def get_days
-		@date.wday
-	end
-end
-
-class Phone
-
-  attr_reader :raw
-
-	def initialize(phone)
-		@raw = phone.to_s.tr("-. \(\)", "")
-	end
-  
-  def to_s
-    clean
-  end
-
-  private
-
-	def clean
-		phone_length = raw.length
-		case phone_length
-			when 0..9
-				invalid_number
-			when 10
-				raw
-			when 11
-				if @phone[0] == "1"
-				  @phone = @phone[1..9]
-				else
-				  invalid_number
-				end
-			else
-				invalid_number
-		end
-	end
-
-  def invalid_number
-    "0000000000"
-  end
-end
-
-class ZipCode
-
-	def initialize(zipcode)
-		@zipcode = zipcode
-	end
-
-	def clean_zipcode
-		if @zipcode.nil?
-			"00000"
-		else
-			"0"*(5 - @zipcode.length) + @zipcode
-		end
-	end
-
-	def zipcode_to_representatives(zipcode)
-		Sunlight::Legislator.all_in_zipcode(@zipcode)
-	end
-end
+require_relative "phone"
+require_relative "zipcode"
+require_relative "date_and_time"
 
 class EventAttendee
 
