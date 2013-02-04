@@ -18,11 +18,11 @@ class DateAndTime
 	end
 
 	def get_hours
-		hours = @date.hour
+    	@date.hour
 	end
 
 	def get_days
-		days = @date.wday
+		@date.wday
 	end
 end
 
@@ -61,7 +61,6 @@ class Phone
   def invalid_number
     "0000000000"
   end
-
 end
 
 class ZipCode
